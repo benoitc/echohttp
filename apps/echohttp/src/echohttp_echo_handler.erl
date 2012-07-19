@@ -20,8 +20,6 @@ handle(Req0, State) ->
     {ok, Reply} = cowboy_http_req:reply(200, RespHeaders, JsonBody, Req),
     {ok, Reply, State}.
 
-
-
 terminate(_Req, _State) ->
     ok.
 
@@ -36,8 +34,6 @@ build_echo(Req) ->
               headers=Headers,
               raw_host=Host,
               port=Port}= Req,
-
-    %%{PeerAddr, _} = cowboy_http_req:peer_addr(Req),
 
     %% version str
     {Min, Maj} = Version,
@@ -60,7 +56,6 @@ build_echo(Req) ->
                 (KV, Acc) ->
                     [KV | Acc]
                 end, [], Headers)),
-
 
     %% fix raw path
     Path1 = case Path of
@@ -95,9 +90,7 @@ build_echo(Req) ->
         _ -> {QSVals}
     end,
 
-
-    JsonObj = {[
-                {<<"version">>, VersionStr},
+    JsonObj = {[{<<"version">>, VersionStr},
                 {<<"method">>, Method},
                 {<<"path">>, RawPath},
                 {<<"decode_path">>, {[
