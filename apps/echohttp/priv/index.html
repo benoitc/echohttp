@@ -1,0 +1,48 @@
+<html>
+  <title>echohttp</title>
+  <body>
+
+    <h1>echohttp</h1>
+
+    <p>echohtp is a simple service echoing any requests made to <a
+      href="http://echohttp.com/echo">http://echohttp.com/echo</a>. It
+    can be useful for those who want to test their requests.</p>
+
+    <p>Enjoy :)</p>
+
+    <p>ex:
+    <pre>curl 'http://echohttp.com/echo/test/essai?a=45' -d "test=essai" -d "a=essai"
+{
+  "version" : "HTTP/1.1",
+  "method" : "POST",
+  "path" : "/echo/test/essai?a=45",
+  "decode_path" : {
+    "path" : "/echo/test/essai",
+    "query_string" : "a=45",
+    "qs" : {
+
+    },
+    "path_info" : [
+      "test",
+      "essai"
+    ]
+  },
+  "headers" : {
+    "Content-Type" : "application/x-www-form-urlencoded",
+    "Content-Length" : "18",
+    "Accept" : "*/*",
+    "Host" : "127.0.0.1:8080",
+    "User-Agent" : "curl/7.24.0 (x86_64-apple-darwin12.0) libcurl/7.24.0 OpenSSL/0.9.8r zlib/1.2.5"
+  },
+  "body" : "test=essai&a=essai",
+  "json" : {
+
+  },
+  "form" : {
+    "test" : "essai",
+    "a" : "essai"
+  }
+}</pre></p>
+
+  </body>
+</html>

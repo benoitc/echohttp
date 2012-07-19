@@ -1,0 +1,7 @@
+ebin
+*.beam
+*.sw*
+deps
+.DS_Store
+rel/echohttp
+erl_crash.dump

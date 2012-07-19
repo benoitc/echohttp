@@ -1,0 +1,11 @@
+@copyright 2012 Benoît Chesneau.
+@version 0.2
+@title echohttp 
+
+@doc
+
+echohtp is a simple service echoing any requests made to
+http://echohttp.com/echo. It can be useful for those who want to test
+their requests.
+
+@end

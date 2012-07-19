@@ -1,0 +1,12 @@
+{application, echohttp,
+ [
+  {description, ""},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {mod, { echohttp_app, []}},
+  {env, [{ip, any}, {port, 8080}]}
+ ]}.
