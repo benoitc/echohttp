@@ -4,6 +4,8 @@
 
 init(Req, State) ->
     #{ peer := {PeerIP, _} } = Req,
+    %% we try to get the IP from the X-Forwarded-For heade
+    %% https://en.wikipedia.org/wiki/X-Forwarded-For
     IP = 
         case cowboy_req:parse_header(<<"x-forwarded-for">>, Req) of
             [IP0 | _] -> IP0;
