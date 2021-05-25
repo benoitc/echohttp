@@ -5,15 +5,14 @@
 -define(MAX_BODY_SIZE, 4294967296).
 
 init(Req0, State) ->
+    %% build echo object
     {ok, JsonObj, Req} = build_echo(Req0),
-
+    %% build HTTPresponse
     JsonBody0 = jsx:encode(JsonObj, [space, {indent, 2}]),
     JsonBody = binary:replace(JsonBody0, <<"\\">>, <<"">>, [global]),
-
     RespHeaders = #{<<"Content-Type">> => <<"application/json">>},
-
-    Req = cowboy_req:reply(200, RespHeaders, JsonBody, Req),
-    {ok, Req, State}.
+    NewReq = cowboy_req:reply(200, RespHeaders, JsonBody, Req),
+    {ok, NewReq, State}.
 
 terminate(_Req, _State) ->
     ok.

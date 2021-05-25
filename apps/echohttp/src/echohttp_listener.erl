@@ -16,7 +16,6 @@ start_link() ->
 init([]) ->
     {ok, Port} = application:get_env(echohttp, port),
     {ok, BindAddress} = application:get_env(echohttp, ip),
-
     ParsedIp = case BindAddress of
         any ->
             any;
@@ -26,9 +25,9 @@ init([]) ->
             {ok, IpTuple} = inet_parse:address(Ip),
             IpTuple
     end,
-
     Dispatch = cowboy_router:compile([
         {'_', [{"/echo/[...]", echohttp_echo_handler, []}
+              ,{"/ip", echohttp_ip_handler, []}
               ,{'_', cowboy_static, {priv_file, echohttp, "index.html"}}]
             }]),
     {ok, _} = cowboy:start_clear(echo_http_listener
