@@ -63,6 +63,8 @@ build_echo(Req) ->
             QSVals -> maps:from_list(QSVals)
         end,
 
+    Cookies = cowboy_req:parse_cookies(Req),
+
     JsonObj = #{<<"version">> => Version,
                 <<"method">> => Method,
                 <<"scheme">> => Scheme,
@@ -75,6 +77,7 @@ build_echo(Req) ->
                                        <<"qs">> => QSObj,
                                        <<"path_info">> => cowboy_req:path_info(Req)},
                 <<"headers">> => Headers,
+                <<"cookies">> => maps:from_list(Cookies),
                 <<"body">> => ReqBody,
                 <<"json">> => JsonReq,
                 <<"form">> => Form},
