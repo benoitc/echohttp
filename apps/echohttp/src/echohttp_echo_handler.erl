@@ -42,6 +42,8 @@ build_echo(Req) ->
             << Path1/binary, "?", QS/binary >>
     end,
 
+    Url = location(Scheme, Host, Port, RawPath),
+
     CType = cowboy_req:parse_header(<<"content-type">>, Req),
     {ok, ReqBody, NewReq} =  cowboy_req:read_body(Req, #{length => ?MAX_BODY_SIZE}),
 
@@ -65,6 +67,7 @@ build_echo(Req) ->
     JsonObj = #{<<"version">> => Version,
                 <<"method">> => Method,
                 <<"scheme">> => Scheme,
+                <<"url">> => Url,
                 <<"host">> => Host,
                 <<"port">> => Port,
                 <<"raw_path">> => RawPath,
@@ -79,3 +82,19 @@ build_echo(Req) ->
 
     io:format("json obj ~p~n", [JsonObj]),
     {ok, JsonObj, NewReq}.
+
+
+default_port(<<"http">>) -> 80;
+default_port(<<"https">>) -> 443.
+
+location(Scheme, Host, Port, Path) ->
+    case application:get_env(echohttp, public_url) of
+        {ok, PublicUrl} ->
+            << PublicUrl/binary, Path/binary >>;
+        undefined ->
+            NetLoc = case default_port(Scheme) of
+                Port -> Host;
+                _ -> << Host/binary, ":", (integer_to_binary(Port))/binary >>
+            end,
+            << Scheme/binary, "://", NetLoc/binary, Path/binary >>
+        end.

@@ -9,5 +9,5 @@
                   cowboy
                  ]},
   {mod, { echohttp_app, []}},
-  {env, [{ip, any}, {port, 8080}]}
+  {env, [{ip, any}, {port, 8080}, {public_url, <<"http://echohttp.com">>}]}
  ]}.
