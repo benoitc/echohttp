@@ -21,6 +21,8 @@ handle_action(<<"cookies">>, Req, State) ->
     handle_cookies(cowboy_req:binding(param, Req), Req, State);
 handle_action(<<"redirect">>, Req, State) ->
     handle_redirect(cowboy_req:binding(param, Req), Req, State);
+handle_action(<<"auth">>, Req, State) ->
+    handle_auth(cowboy_req:binding(param, Req), Req, State);
 handle_action(_Action, Req, State) ->
     NewReq =  cowboy_req:reply(404, #{}, Req),
     {ok, NewReq, State}.
@@ -115,6 +117,25 @@ location_url(Req, ParsedQs) ->
     DefaultUrl = echohttp_echo_handler:location(Scheme, Host, Port, <<"/test/method/get">>),
     ParsedQs = maps:from_list(cowboy_req:parse_qs(Req)),
     maps:get(<<"url">>, ParsedQs, DefaultUrl).
+
+handle_auth(<<"basic">>, Req, State) ->
+    ParsedQs = maps:from_list(cowboy_req:parse_qs(Req)),
+    case maps:find(<<"user">>, ParsedQs) of
+        {ok, User} ->
+            Password = maps:get(<<"user">>, ParsedQs, <<>>),
+            case cowboy_req:parse_header(<<"authorization">>, Req) of
+                {basic, User, Password} ->
+                    cowboy_req:reply(200, #{}, <<"OK">>, State);
+                _ ->
+                    cowboy_req:reply(401, #{<<"WWW-Authenticate">> => <<"Basic realm=\"echohttp auth\"">>}, <<"authentication required">>, Req)
+            end;
+        error ->
+            cowboy_req:reply(400, #{}, <<"user undefined">>, State)
+    end;
+handle_auth(_, Req, State) ->
+    NewReq =  cowboy_req:reply(404, #{}, Req),
+    {ok, NewReq, State}.        
+
 
 reply_bad_request(Req, State) ->
     NewReq =  cowboy_req:reply(400, #{}, Req),
