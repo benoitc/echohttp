@@ -28,6 +28,8 @@ init([]) ->
     Dispatch = cowboy_router:compile([
         {'_', [{"/echo/[...]", echohttp_echo_handler, []}
               ,{"/ip", echohttp_ip_handler, []}
+              ,{"/test/:action", echohttp_test_handler, []}
+              ,{"/test/:action/:param", echohttp_test_handler, []}
               ,{'_', cowboy_static, {priv_file, echohttp, "index.html"}}]
             }]),
     {ok, _} = cowboy:start_clear(echo_http_listener

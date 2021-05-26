@@ -2,11 +2,15 @@
 
 -export([init/2, terminate/2]).
 
+-export([build_echo_object/1]).
+
+-export([location/4]).
+
 -define(MAX_BODY_SIZE, 4294967296).
 
 init(Req0, State) ->
     %% build echo object
-    {ok, JsonObj, Req} = build_echo(Req0),
+    {ok, JsonObj, Req} = build_echo_object(Req0),
     %% build HTTPresponse
     JsonBody0 = jsx:encode(JsonObj, [space, {indent, 2}]),
     JsonBody = binary:replace(JsonBody0, <<"\\">>, <<"">>, [global]),
@@ -17,7 +21,7 @@ init(Req0, State) ->
 terminate(_Req, _State) ->
     ok.
 
-build_echo(Req) ->
+build_echo_object(Req) ->
     #{method := Method
      ,version := Version
      ,scheme := Scheme
