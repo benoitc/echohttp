@@ -1,3 +1,0 @@
-{application,echohttp}.
-{packages,[]}.
-{modules,[echohttp_app,echohttp_echo_handler,echohttp_sup]}.
